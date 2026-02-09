@@ -1,5 +1,17 @@
 @import "tailwindcss";
 
+/* Leaflet Map Styles */
+.leaflet-container {
+  height: 100%;
+  width: 100%;
+  z-index: 1;
+}
+
+.leaflet-control-container .leaflet-top,
+.leaflet-control-container .leaflet-bottom {
+  z-index: 999;
+}
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
