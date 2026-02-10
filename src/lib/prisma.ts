@@ -1,8 +1,5 @@
 import { PrismaClient } from "@prisma/client";
 import { PrismaNeon } from "@prisma/adapter-neon";
-import { neonConfig } from "@neondatabase/serverless";
-
-neonConfig.fetchConnectionCache = true;
 
 function getConnectionUrl(): string {
   const envUrl = process.env.DATABASE_URL;

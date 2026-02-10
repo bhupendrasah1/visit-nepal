@@ -1,8 +1,16 @@
 import { prisma } from "@/lib/prisma";
-import { Prisma } from "@prisma/client";
 import Link from "next/link";
 
-type BookingWithUser = Prisma.BookingGetPayload<{ include: { user: true } }>;
+interface BookingWithUser {
+  id: string;
+  userId: string;
+  type: string;
+  itemName: string;
+  price: number;
+  status: string;
+  createdAt: Date;
+  user: { id: string; name: string | null; email: string | null } | null;
+}
 
 export default async function AdminDashboard() {
   const [destinations, hotels, vehicles, flights, bookings, totalBookings] = await Promise.all([
