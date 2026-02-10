@@ -1,37 +1,50 @@
+export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
+
 import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 
 export async function POST(req: Request) {
-  const session = await getServerSession(authOptions);
+  try {
+    const session = await getServerSession(authOptions);
 
-  if (!session?.user?.email) {
-    return new Response("Unauthorized", { status: 401 });
-  }
+    if (!session?.user?.email) {
+      return new Response("Unauthorized", { status: 401 });
+    }
 
-  const { destinationId } = await req.json();
+    const body = await req.json();
+    const destinationId = body?.destinationId;
 
-  const user = await prisma.user.findUnique({
-    where: { email: session.user.email },
-  });
+    if (!destinationId) {
+      return new Response("Missing destinationId", { status: 400 });
+    }
 
-  if (!user) {
-    return new Response("User not found", { status: 404 });
-  }
+    const user = await prisma.user.findUnique({
+      where: { email: session.user.email },
+    });
 
-  await prisma.wishlist.upsert({
-    where: {
-      userId_destinationId: {
+    if (!user) {
+      return new Response("User not found", { status: 404 });
+    }
+
+    await prisma.wishlist.upsert({
+      where: {
+        userId_destinationId: {
+          userId: user.id,
+          destinationId,
+        },
+      },
+      update: {},
+      create: {
         userId: user.id,
         destinationId,
       },
-    },
-    update: {},
-    create: {
-      userId: user.id,
-      destinationId,
-    },
-  });
+    });
 
-  return Response.json({ success: true });
+    return Response.json({ success: true });
+  } catch (error) {
+    console.error(error);
+    return new Response("Server error", { status: 500 });
+  }
 }
