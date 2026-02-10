@@ -1,5 +1,8 @@
 import { prisma } from "@/lib/prisma";
+import { Prisma } from "@prisma/client";
 import Link from "next/link";
+
+type BookingWithUser = Prisma.BookingGetPayload<{ include: { user: true } }>;
 
 export default async function AdminDashboard() {
   const [destinations, hotels, vehicles, flights, bookings, totalBookings] = await Promise.all([
@@ -86,7 +89,7 @@ export default async function AdminDashboard() {
               <p className="text-gray-500 text-center py-8">No bookings yet</p>
             ) : (
               <div className="space-y-3 max-h-64 overflow-y-auto">
-                {bookings.map((booking) => (
+                {bookings.map((booking: BookingWithUser) => (
                   <div key={booking.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                     <div>
                       <p className="font-medium">{booking.itemName}</p>
