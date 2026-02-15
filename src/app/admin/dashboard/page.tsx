@@ -1,5 +1,7 @@
+import FestivalEvents, { FestivalEvent } from "@/components/FestivalEvents";
 import { prisma } from "@/lib/prisma";
 import Link from "next/link";
+import { type LucideIcon, Car, ClipboardList, Hotel, LayoutDashboard, Mountain, Plane, Star, Zap } from "lucide-react";
 
 interface BookingWithUser {
   id: string;
@@ -26,27 +28,56 @@ export default async function AdminDashboard() {
     prisma.booking.count(),
   ]);
 
-  const stats = [
-    { label: "Destinations", count: destinations.length, icon: "🏔️", color: "bg-blue-500", href: "/admin/destinations" },
-    { label: "Hotels", count: hotels.length, icon: "🏨", color: "bg-green-500", href: "/admin/hotels" },
-    { label: "Vehicles", count: vehicles.length, icon: "🚗", color: "bg-yellow-500", href: "/admin/vehicles" },
-    { label: "Flights", count: flights.length, icon: "✈️", color: "bg-purple-500", href: "/admin/flights" },
-    { label: "Bookings", count: totalBookings, icon: "📋", color: "bg-pink-500", href: "/bookings" },
+  const stats: { label: string; count: number; icon: LucideIcon; color: string; href: string }[] = [
+    { label: "Destinations", count: destinations.length, icon: Mountain, color: "bg-blue-500", href: "/admin/destinations" },
+    { label: "Hotels", count: hotels.length, icon: Hotel, color: "bg-green-500", href: "/admin/hotels" },
+    { label: "Vehicles", count: vehicles.length, icon: Car, color: "bg-yellow-500", href: "/admin/vehicles" },
+    { label: "Flights", count: flights.length, icon: Plane, color: "bg-purple-500", href: "/admin/flights" },
+    { label: "Bookings", count: totalBookings, icon: ClipboardList, color: "bg-pink-500", href: "/bookings" },
   ];
-    const quickActions = [
-  { label: "Add Destination", icon: "🏔️", color: "bg-blue-600 hover:bg-blue-700", href: "/admin/destinations" },
-  { label: "Add Hotel", icon: "🏨", color: "bg-green-600 hover:bg-green-700", href: "/admin/hotels" },
-  { label: "Add Vehicle", icon: "🚗", color: "bg-yellow-600 hover:bg-yellow-700", href: "/admin/vehicles" },
-  { label: "Add Flight", icon: "✈️", color: "bg-purple-600 hover:bg-purple-700", href: "/admin/flights" },
-];
+  const quickActions: { label: string; icon: LucideIcon; color: string; href: string }[] = [
+    { label: "Add Destination", icon: Mountain, color: "bg-blue-600 hover:bg-blue-700", href: "/admin/destinations" },
+    { label: "Add Hotel", icon: Hotel, color: "bg-green-600 hover:bg-green-700", href: "/admin/hotels" },
+    { label: "Add Vehicle", icon: Car, color: "bg-yellow-600 hover:bg-yellow-700", href: "/admin/vehicles" },
+    { label: "Add Flight", icon: Plane, color: "bg-purple-600 hover:bg-purple-700", href: "/admin/flights" },
+  ];
 
-
+ 
   return (
     <main className="min-h-screen bg-gray-50">
+      {/* Navbar */}
+      <header className="bg-white border-b">
+        <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
+          <Link href="/" className="flex items-center gap-3">
+            <div className="h-10 w-10 rounded-full bg-blue-700 flex items-center justify-center text-white font-bold text-sm">
+              NTB
+            </div>
+            <div className="flex flex-col leading-none">
+              <span className="text-xs font-semibold text-blue-700">NTB</span>
+              <span className="text-2xl font-bold text-yellow-500 tracking-wide">nepal</span>
+            </div>
+          </Link>
+          <nav className="hidden md:flex items-center gap-8 text-sm font-semibold text-gray-700">
+            <Link href="/places" className="hover:text-red-600 transition">
+              Places to go
+            </Link>
+            <Link href="/festivals" className="hover:text-red-600 transition">
+              Festivals & Events
+            </Link>
+            <Link href="/trip-planner" className="hover:text-red-600 transition">
+              Plan Your Trip
+            </Link>
+          </nav>
+        </div>
+      </header>
+
       {/* Header */}
       <div className="bg-white shadow">
         <div className="max-w-7xl mx-auto px-4 py-6">
-          <h1 className="text-3xl font-bold text-gray-900">🇳🇵 Admin Dashboard</h1>
+          <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-2">
+            <LayoutDashboard className="h-7 w-7 text-blue-700" aria-hidden="true" />
+            Admin Dashboard
+          </h1>
           <p className="text-gray-600 mt-1">Manage your Visit Nepal platform</p>
         </div>
       </div>
@@ -56,8 +87,8 @@ export default async function AdminDashboard() {
         <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
           {stats.map((stat) => (
             <Link key={stat.label} href={stat.href} className="bg-white rounded-xl shadow p-4 hover:shadow-lg transition cursor-pointer">
-              <div className={`${stat.color} w-12 h-12 rounded-lg flex items-center justify-center text-2xl mb-3`}>
-                {stat.icon}
+              <div className={`${stat.color} w-12 h-12 rounded-lg flex items-center justify-center mb-3`}>
+                <stat.icon className="h-6 w-6 text-white" aria-hidden="true" />
               </div>
               <p className="text-3xl font-bold text-gray-900">{stat.count}</p>
               <p className="text-gray-500 text-sm">{stat.label}</p>
@@ -67,7 +98,10 @@ export default async function AdminDashboard() {
 
         {/* Quick Actions */}
         <div className="bg-white rounded-xl shadow p-6 mb-8">
-          <h2 className="text-xl font-bold mb-4">⚡ Quick Actions</h2>
+          <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
+            <Zap className="h-5 w-5 text-yellow-500" aria-hidden="true" />
+            Quick Actions
+          </h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {quickActions.map((action) => (
               <Link
@@ -75,19 +109,22 @@ export default async function AdminDashboard() {
                 href={action.href}
                 className={`${action.color} text-white font-semibold py-4 px-6 rounded-xl transition flex items-center justify-center gap-2 text-center`}
               >
-                <span className="text-2xl">{action.icon}</span>
+                <action.icon className="h-5 w-5" aria-hidden="true" />
                 <span>{action.label}</span>
               </Link>
             ))}
           </div>
         </div>
 
+       
+
         <div className="grid lg:grid-cols-2 gap-8">
           {/* Recent Bookings */}
           <div className="bg-white rounded-xl shadow p-6">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-xl font-bold flex items-center gap-2">
-                📋 Recent Bookings ({totalBookings})
+                <ClipboardList className="h-5 w-5 text-blue-600" aria-hidden="true" />
+                Recent Bookings ({totalBookings})
               </h2>
               <Link href="/bookings" className="text-blue-600 hover:underline text-sm">
                 View All →
@@ -124,7 +161,8 @@ export default async function AdminDashboard() {
           <div className="bg-white rounded-xl shadow p-6">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-xl font-bold flex items-center gap-2">
-                🏔️ Recent Destinations
+                <Mountain className="h-5 w-5 text-blue-600" aria-hidden="true" />
+                Recent Destinations
               </h2>
               <Link href="/admin/destinations" className="text-blue-600 hover:underline text-sm">
                 Manage →
@@ -156,7 +194,10 @@ export default async function AdminDashboard() {
           {/* Hotels Table */}
           <div className="bg-white rounded-xl shadow overflow-hidden">
             <div className="px-6 py-4 border-b bg-gray-50 flex items-center justify-between">
-              <h2 className="text-xl font-bold">🏨 Hotels ({hotels.length})</h2>
+              <h2 className="text-xl font-bold flex items-center gap-2">
+                <Hotel className="h-5 w-5 text-green-600" aria-hidden="true" />
+                Hotels ({hotels.length})
+              </h2>
               <Link href="/admin/hotels" className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm transition">
                 + Add Hotel
               </Link>
@@ -177,7 +218,12 @@ export default async function AdminDashboard() {
                       <td className="px-6 py-4 font-medium">{hotel.name}</td>
                       <td className="px-6 py-4 text-gray-600">{hotel.destination.name}</td>
                       <td className="px-6 py-4 text-green-600">NPR {hotel.pricePerNight.toLocaleString()}</td>
-                      <td className="px-6 py-4">⭐ {hotel.rating}</td>
+                      <td className="px-6 py-4">
+                        <div className="flex items-center gap-1">
+                          <Star className="h-4 w-4 text-yellow-500" aria-hidden="true" />
+                          <span>{hotel.rating}</span>
+                        </div>
+                      </td>
                     </tr>
                   ))}
                   {hotels.length === 0 && (
@@ -191,7 +237,10 @@ export default async function AdminDashboard() {
           {/* Vehicles Table */}
           <div className="bg-white rounded-xl shadow overflow-hidden">
             <div className="px-6 py-4 border-b bg-gray-50 flex items-center justify-between">
-              <h2 className="text-xl font-bold">🚗 Vehicles ({vehicles.length})</h2>
+              <h2 className="text-xl font-bold flex items-center gap-2">
+                <Car className="h-5 w-5 text-yellow-600" aria-hidden="true" />
+                Vehicles ({vehicles.length})
+              </h2>
               <Link href="/admin/vehicles" className="bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-2 rounded-lg text-sm transition">
                 + Add Vehicle
               </Link>
@@ -224,7 +273,10 @@ export default async function AdminDashboard() {
           {/* Flights Table */}
           <div className="bg-white rounded-xl shadow overflow-hidden">
             <div className="px-6 py-4 border-b bg-gray-50 flex items-center justify-between">
-              <h2 className="text-xl font-bold">✈️ Flights ({flights.length})</h2>
+              <h2 className="text-xl font-bold flex items-center gap-2">
+                <Plane className="h-5 w-5 text-purple-600" aria-hidden="true" />
+                Flights ({flights.length})
+              </h2>
               <Link href="/admin/flights" className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg text-sm transition">
                 + Add Flight
               </Link>

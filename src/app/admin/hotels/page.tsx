@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import Link from "next/link";
+import { AlertTriangle, Hotel, Star } from "lucide-react";
 
 export default async function AdminHotels() {
   const [destinations, hotels] = await Promise.all([
@@ -15,7 +16,10 @@ export default async function AdminHotels() {
           <Link href="/admin/dashboard" className="text-blue-600 hover:underline text-sm mb-2 inline-block">
             ← Back to Dashboard
           </Link>
-          <h1 className="text-3xl font-bold text-gray-900">🏨 Add Hotel</h1>
+          <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-2">
+            <Hotel className="h-7 w-7 text-green-600" aria-hidden="true" />
+            Add Hotel
+          </h1>
           <p className="text-gray-600 mt-1">Add accommodation options for destinations</p>
         </div>
       </div>
@@ -23,7 +27,10 @@ export default async function AdminHotels() {
       <div className="max-w-4xl mx-auto px-4 py-8">
         {destinations.length === 0 ? (
           <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-6 text-center">
-            <p className="text-yellow-800 font-medium mb-4">⚠️ No destinations available</p>
+            <p className="text-yellow-800 font-medium mb-4 flex items-center justify-center gap-2">
+              <AlertTriangle className="h-5 w-5" aria-hidden="true" />
+              No destinations available
+            </p>
             <p className="text-yellow-700 mb-4">You need to add a destination before adding hotels.</p>
             <Link href="/admin/destinations" className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg transition inline-block">
               Add Destination First
@@ -121,7 +128,12 @@ export default async function AdminHotels() {
                     <td className="px-6 py-4 font-medium">{hotel.name}</td>
                     <td className="px-6 py-4 text-gray-600">{hotel.destination.name}</td>
                     <td className="px-6 py-4 text-green-600">NPR {hotel.pricePerNight.toLocaleString()}</td>
-                    <td className="px-6 py-4">⭐ {hotel.rating}</td>
+                    <td className="px-6 py-4">
+                      <div className="flex items-center gap-1">
+                        <Star className="h-4 w-4 text-yellow-500" aria-hidden="true" />
+                        <span>{hotel.rating}</span>
+                      </div>
+                    </td>
                   </tr>
                 ))}
                 {hotels.length === 0 && (

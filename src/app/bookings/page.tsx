@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import Link from "next/link";
+import { BookOpen } from "lucide-react";
 
 export default async function MyBookings() {
   const session = await getServerSession();
@@ -17,7 +18,10 @@ export default async function MyBookings() {
 
   return (
     <main className="p-10">
-      <h1 className="text-3xl font-bold mb-6">📖 My Bookings</h1>
+      <h1 className="text-3xl font-bold mb-6 flex items-center gap-2">
+        <BookOpen className="h-7 w-7 text-blue-600" aria-hidden="true" />
+        My Bookings
+      </h1>
 
       {bookings.map((b) => (
         <div key={b.id} className="border p-4 mb-3 rounded">

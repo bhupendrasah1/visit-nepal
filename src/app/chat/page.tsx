@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { Bot } from "lucide-react";
 
 type Message = {
   role: "user" | "bot";
@@ -22,7 +23,7 @@ export default function ChatPage() {
     }
   }, [status, router]);
 
-  // 🔹 Load chat history on first render
+  // Load chat history on first render
   useEffect(() => {
     if (status !== "authenticated") return;
     
@@ -84,7 +85,10 @@ export default function ChatPage() {
 
   return (
     <div className="max-w-2xl mx-auto p-6">
-      <h1 className="text-2xl font-bold mb-4">🇳🇵 Nepal Tourism Chatbot</h1>
+      <h1 className="text-2xl font-bold mb-4 flex items-center gap-2">
+        <Bot className="h-6 w-6 text-blue-600" aria-hidden="true" />
+        Nepal Tourism Chatbot
+      </h1>
 
       <div className="border rounded-lg p-4 h-[400px] overflow-y-auto space-y-2">
         {messages.map((m, i) => (

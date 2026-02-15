@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import BookFlightButton from "@/components/BookFlightButton";
+import { Clock, Plane } from "lucide-react";
 
 export default async function FlightsPage() {
   const flights = await prisma.flight.findMany();
@@ -7,7 +8,10 @@ export default async function FlightsPage() {
   return (
     <main className="min-h-screen bg-gray-50 p-10">
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-3xl font-bold mb-2">✈️ Available Flights</h1>
+        <h1 className="text-3xl font-bold mb-2 flex items-center gap-2">
+          <Plane className="h-7 w-7 text-purple-600" aria-hidden="true" />
+          Available Flights
+        </h1>
         <p className="text-gray-600 mb-8">Book domestic flights across Nepal</p>
 
         {flights.length === 0 ? (
@@ -27,14 +31,15 @@ export default async function FlightsPage() {
                       <span className="text-2xl font-bold text-gray-800">{f.from}</span>
                       <div className="flex-1 flex items-center gap-2">
                         <div className="h-[2px] flex-1 bg-gray-300"></div>
-                        <span className="text-gray-400">✈️</span>
+                        <Plane className="h-4 w-4 text-gray-400" aria-hidden="true" />
                         <div className="h-[2px] flex-1 bg-gray-300"></div>
                       </div>
                       <span className="text-2xl font-bold text-gray-800">{f.to}</span>
                     </div>
                     <p className="text-gray-500">
                       <span className="inline-flex items-center gap-1">
-                        🕐 Duration: {f.duration}
+                        <Clock className="h-4 w-4 text-gray-500" aria-hidden="true" />
+                        Duration: {f.duration}
                       </span>
                     </p>
                   </div>

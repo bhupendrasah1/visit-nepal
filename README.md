@@ -7,6 +7,8 @@ A full-stack tourism web application for exploring Nepal's destinations, booking
 ![Prisma](https://img.shields.io/badge/Prisma-7-2D3748?style=flat-square&logo=prisma)
 ![TailwindCSS](https://img.shields.io/badge/Tailwind-4-38B2AC?style=flat-square&logo=tailwind-css)
 
+> 🚀 **Ready to deploy?** Check out our [Quick Deployment Guide](./DEPLOYMENT.md) for step-by-step Vercel deployment instructions.
+
 ## ✨ Features
 
 ### 🗺️ Destinations
@@ -123,7 +125,136 @@ src/
 6. **Open your browser**
    Navigate to [http://localhost:3000](http://localhost:3000)
 
-## 🔑 Environment Variables
+## � Deploy to Vercel
+
+### One-Click Deploy
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/yourusername/visit-nepal&env=DATABASE_URL,GOOGLE_CLIENT_ID,GOOGLE_CLIENT_SECRET,NEXTAUTH_URL,NEXTAUTH_SECRET,GROQ_API_KEY&envDescription=Required%20environment%20variables%20for%20Visit%20Nepal&project-name=visit-nepal&repository-name=visit-nepal)
+
+### Manual Deployment Steps
+
+1. **Push your code to GitHub**
+   ```bash
+   git init
+   git add .
+   git commit -m "Initial commit"
+   git remote add origin https://github.com/yourusername/visit-nepal.git
+   git push -u origin main
+   ```
+
+2. **Deploy on Vercel**
+   - Go to [vercel.com](https://vercel.com) and sign in
+   - Click **"Add New Project"**
+   - Import your GitHub repository
+   - Configure your project:
+     - **Framework Preset**: Next.js (auto-detected)
+     - **Build Command**: `npm run build` (default)
+     - **Output Directory**: `.next` (default)
+     - **Install Command**: `npm install` (default)
+
+3. **Set Environment Variables**
+   
+   In Vercel project settings → Environment Variables, add:
+
+   | Variable | Value | Notes |
+   |----------|-------|-------|
+   | `DATABASE_URL` | Your Neon database URL | From [neon.tech](https://neon.tech) |
+   | `GOOGLE_CLIENT_ID` | Your Google OAuth ID | From Google Cloud Console |
+   | `GOOGLE_CLIENT_SECRET` | Your Google OAuth secret | From Google Cloud Console |
+   | `NEXTAUTH_URL` | `https://your-app.vercel.app` | Your Vercel deployment URL |
+   | `NEXTAUTH_SECRET` | Generate with `openssl rand -base64 32` | Keep this secret! |
+   | `GROQ_API_KEY` | Your Groq API key | From [console.groq.com](https://console.groq.com) |
+
+4. **Update Google OAuth Settings**
+   - Go to [Google Cloud Console](https://console.cloud.google.com/apis/credentials)
+   - Select your OAuth 2.0 Client
+   - Add Authorized redirect URIs:
+     ```
+     https://your-app.vercel.app/api/auth/callback/google
+     ```
+   - Add Authorized JavaScript origins:
+     ```
+     https://your-app.vercel.app
+     ```
+
+5. **Deploy the Database Schema**
+   
+   After first deployment, run Prisma migrations:
+   ```bash
+   # Install Vercel CLI (if not already installed)
+   npm i -g vercel
+   
+   # Login to Vercel
+   vercel login
+   
+   # Link to your project
+   vercel link
+   
+   # Push database schema
+   npx prisma generate
+   npx prisma db push
+   ```
+
+6. **Verify Deployment**
+   - Your app should now be live at `https://your-app.vercel.app`
+   - Test authentication with Google
+   - Check all protected routes work
+   - Verify database connections
+
+### 🔧 Post-Deployment Checklist
+
+- [ ] All environment variables are set correctly
+- [ ] Database schema is pushed (`prisma db push`)
+- [ ] Google OAuth redirect URIs are configured
+- [ ] Login functionality works
+- [ ] Chat feature connects to Groq API
+- [ ] Maps load correctly
+- [ ] Admin dashboard is accessible
+
+### ⚠️ Common Deployment Issues
+
+**Issue**: "Invalid database URL"
+- **Solution**: Ensure your `DATABASE_URL` is correctly formatted and accessible from Vercel
+
+**Issue**: OAuth redirect error
+- **Solution**: Add your Vercel domain to Google OAuth authorized redirect URIs
+
+**Issue**: "Module not found" errors
+- **Solution**: Clear Vercel cache and redeploy, or check if all dependencies are in `package.json`
+
+**Issue**: Prisma client not generated
+- **Solution**: Add `"postinstall": "prisma generate"` to your `package.json` scripts
+
+**Issue**: Environment variables not updating
+- **Solution**: Redeploy after changing environment variables in Vercel dashboard
+
+### 📊 Monitoring & Analytics
+
+Enable Vercel Analytics and Speed Insights:
+
+```bash
+npm install @vercel/analytics @vercel/speed-insights
+```
+
+Then add to your root layout (`src/app/layout.tsx`):
+```tsx
+import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from '@vercel/speed-insights/next';
+
+export default function RootLayout({ children }) {
+  return (
+    <html>
+      <body>
+        {children}
+        <Analytics />
+        <SpeedInsights />
+      </body>
+    </html>
+  );
+}
+```
+
+## �🔑 Environment Variables
 
 | Variable | Description | Required |
 |----------|-------------|----------|

@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import Link from "next/link";
+import { MapPin, Plane } from "lucide-react";
 
 export default async function AdminFlights() {
   const flights = await prisma.flight.findMany({
@@ -14,7 +15,10 @@ export default async function AdminFlights() {
           <Link href="/admin/dashboard" className="text-blue-600 hover:underline text-sm mb-2 inline-block">
             ← Back to Dashboard
           </Link>
-          <h1 className="text-3xl font-bold text-gray-900">✈️ Add Flight</h1>
+          <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-2">
+            <Plane className="h-7 w-7 text-purple-600" aria-hidden="true" />
+            Add Flight
+          </h1>
           <p className="text-gray-600 mt-1">Add domestic flight routes</p>
         </div>
       </div>
@@ -84,7 +88,10 @@ export default async function AdminFlights() {
 
         {/* Common Nepal Routes Reference */}
         <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 mb-8">
-          <h3 className="font-semibold text-blue-800 mb-2">📍 Common Nepal Airport Codes</h3>
+          <h3 className="font-semibold text-blue-800 mb-2 flex items-center gap-2">
+            <MapPin className="h-5 w-5" aria-hidden="true" />
+            Common Nepal Airport Codes
+          </h3>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-2 text-sm text-blue-700">
             <span>KTM - Kathmandu</span>
             <span>PKR - Pokhara</span>

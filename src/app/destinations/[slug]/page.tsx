@@ -2,6 +2,7 @@ import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import ClientMap from "@/components/ClientMap";
 import { unstable_cache } from "next/cache";
+import { Banknote, Car, Hotel, Star, Sun } from "lucide-react";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -54,8 +55,14 @@ export default async function DestinationDetail({ params }: Props) {
       </p>
 
       <div className="mt-6 space-y-2">
-        <p>🌤️ Best Season: {destination.bestSeason}</p>
-        <p>💰 Budget: NPR {destination.budget}</p>
+        <p className="flex items-center gap-2">
+          <Sun className="h-4 w-4 text-orange-500" aria-hidden="true" />
+          Best Season: {destination.bestSeason}
+        </p>
+        <p className="flex items-center gap-2">
+          <Banknote className="h-4 w-4 text-green-600" aria-hidden="true" />
+          Budget: NPR {destination.budget}
+        </p>
       </div>
 
       {canShowMap(destination) && (
@@ -89,18 +96,28 @@ export default async function DestinationDetail({ params }: Props) {
 )}
 
 
-      <h2 className="text-2xl font-semibold mt-8">🏨 Hotels</h2>
+      <h2 className="text-2xl font-semibold mt-8 flex items-center gap-2">
+        <Hotel className="h-5 w-5 text-green-600" aria-hidden="true" />
+        Hotels
+      </h2>
       {destination.hotels.length === 0 ? (
         <p className="text-gray-500">No hotels available for this destination yet.</p>
       ) : (
         destination.hotels.map(h => (
-          <p key={h.id}>
-            {h.name} – NPR {h.pricePerNight}/night ⭐{h.rating}
+          <p key={h.id} className="flex flex-wrap items-center gap-2">
+            <span>{h.name} – NPR {h.pricePerNight}/night</span>
+            <span className="inline-flex items-center gap-1">
+              <Star className="h-4 w-4 text-yellow-500" aria-hidden="true" />
+              {h.rating}
+            </span>
           </p>
         ))
       )}
 
-      <h2 className="text-2xl font-semibold mt-8">🚗 Vehicles</h2>
+      <h2 className="text-2xl font-semibold mt-8 flex items-center gap-2">
+        <Car className="h-5 w-5 text-yellow-600" aria-hidden="true" />
+        Vehicles
+      </h2>
       {destination.vehicles.length === 0 ? (
         <p className="text-gray-500">No vehicles available for this destination yet.</p>
       ) : (

@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import Link from "next/link";
+import { CheckCircle2, CreditCard } from "lucide-react";
 
 export default async function PaymentPage({ params }: { params: { bookingId: string } }) {
   const { bookingId } = await params;
@@ -25,7 +26,7 @@ export default async function PaymentPage({ params }: { params: { bookingId: str
       <main className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="bg-white rounded-xl shadow-lg p-8 max-w-md text-center">
           <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <span className="text-4xl">✅</span>
+            <CheckCircle2 className="h-10 w-10 text-green-600" aria-hidden="true" />
           </div>
           <h1 className="text-2xl font-bold text-green-600 mb-2">Already Paid!</h1>
           <p className="text-gray-600 mb-4">This booking has already been paid.</p>
@@ -40,7 +41,10 @@ export default async function PaymentPage({ params }: { params: { bookingId: str
   return (
     <main className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
       <div className="bg-white rounded-xl shadow-lg p-8 max-w-md w-full">
-        <h1 className="text-2xl font-bold mb-6 text-center">💳 Complete Payment</h1>
+        <h1 className="text-2xl font-bold mb-6 text-center flex items-center justify-center gap-2">
+          <CreditCard className="h-6 w-6 text-green-600" aria-hidden="true" />
+          Complete Payment
+        </h1>
 
         <div className="bg-gray-50 rounded-lg p-4 mb-6">
           <p className="text-sm text-gray-500 mb-1">Booking Details</p>
@@ -64,7 +68,8 @@ export default async function PaymentPage({ params }: { params: { bookingId: str
             type="submit"
             className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-lg transition flex items-center justify-center gap-2"
           >
-            <span>💳</span> Pay with eSewa / Khalti
+            <CreditCard className="h-5 w-5" aria-hidden="true" />
+            Pay with eSewa / Khalti
           </button>
         </form>
 

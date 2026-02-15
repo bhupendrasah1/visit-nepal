@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import Link from "next/link";
+import { CheckCircle2, Mountain, XCircle } from "lucide-react";
 
 export default async function AdminDestinations() {
   const destinations = await prisma.destination.findMany({
@@ -14,7 +15,10 @@ export default async function AdminDestinations() {
           <Link href="/admin/dashboard" className="text-blue-600 hover:underline text-sm mb-2 inline-block">
             ← Back to Dashboard
           </Link>
-          <h1 className="text-3xl font-bold text-gray-900">🏔️ Add Destination</h1>
+          <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-2">
+            <Mountain className="h-7 w-7 text-blue-600" aria-hidden="true" />
+            Add Destination
+          </h1>
           <p className="text-gray-600 mt-1">Create a new travel destination</p>
         </div>
       </div>
@@ -159,7 +163,13 @@ export default async function AdminDestinations() {
                     </td>
                     <td className="px-6 py-4 text-gray-600">{dest.region}</td>
                     <td className="px-6 py-4 text-green-600">NPR {dest.budget.toLocaleString()}</td>
-                    <td className="px-6 py-4">{dest.hasAirport ? '✅' : '❌'}</td>
+                    <td className="px-6 py-4">
+                      {dest.hasAirport ? (
+                        <CheckCircle2 className="h-4 w-4 text-green-600" aria-hidden="true" />
+                      ) : (
+                        <XCircle className="h-4 w-4 text-red-600" aria-hidden="true" />
+                      )}
+                    </td>
                   </tr>
                 ))}
                 {destinations.length === 0 && (
