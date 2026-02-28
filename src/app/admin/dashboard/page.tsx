@@ -216,12 +216,12 @@ export default async function AdminDashboard() {
                   {hotels.slice(0, 5).map((hotel) => (
                     <tr key={hotel.id} className="hover:bg-gray-50">
                       <td className="px-6 py-4 font-medium">{hotel.name}</td>
-                      <td className="px-6 py-4 text-gray-600">{hotel.destination.name}</td>
-                      <td className="px-6 py-4 text-green-600">NPR {hotel.pricePerNight.toLocaleString()}</td>
+                      <td className="px-6 py-4 text-gray-600">{hotel.destination?.name ?? "Unknown"}</td>
+                      <td className="px-6 py-4 text-green-600">NPR {hotel.pricePerNight?.toLocaleString?.() ?? "-"}</td>
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-1">
                           <Star className="h-4 w-4 text-yellow-500" aria-hidden="true" />
-                          <span>{hotel.rating}</span>
+                          <span>{hotel.rating ?? "-"}</span>
                         </div>
                       </td>
                     </tr>
@@ -258,8 +258,8 @@ export default async function AdminDashboard() {
                   {vehicles.slice(0, 5).map((vehicle) => (
                     <tr key={vehicle.id} className="hover:bg-gray-50">
                       <td className="px-6 py-4 font-medium">{vehicle.type}</td>
-                      <td className="px-6 py-4 text-gray-600">{vehicle.destination.name}</td>
-                      <td className="px-6 py-4 text-blue-600">NPR {vehicle.pricePerDay.toLocaleString()}</td>
+                      <td className="px-6 py-4 text-gray-600">{vehicle.destination?.name ?? "Unknown"}</td>
+                      <td className="px-6 py-4 text-blue-600">NPR {vehicle.pricePerDay?.toLocaleString?.() ?? "-"}</td>
                     </tr>
                   ))}
                   {vehicles.length === 0 && (

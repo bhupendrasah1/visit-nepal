@@ -114,13 +114,13 @@ export default async function AdminVehicles() {
                 </tr>
               </thead>
               <tbody className="divide-y">
-                {vehicles.map((vehicle) => (
-                  <tr key={vehicle.id} className="hover:bg-gray-50">
-                    <td className="px-6 py-4 font-medium">{vehicle.type}</td>
-                    <td className="px-6 py-4 text-gray-600">{vehicle.destination.name}</td>
-                    <td className="px-6 py-4 text-yellow-600">NPR {vehicle.pricePerDay.toLocaleString()}</td>
-                  </tr>
-                ))}
+                  {vehicles.map((vehicle) => (
+                    <tr key={vehicle.id} className="hover:bg-gray-50">
+                      <td className="px-6 py-4 font-medium">{vehicle.type}</td>
+                      <td className="px-6 py-4 text-gray-600">{vehicle.destination?.name ?? "Unknown"}</td>
+                      <td className="px-6 py-4 text-yellow-600">NPR {vehicle.pricePerDay?.toLocaleString?.() ?? "-"}</td>
+                    </tr>
+                  ))}
                 {vehicles.length === 0 && (
                   <tr><td colSpan={3} className="px-6 py-8 text-center text-gray-500">No vehicles added yet</td></tr>
                 )}

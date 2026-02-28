@@ -22,24 +22,24 @@ export default async function FlightsPage() {
           <div className="grid gap-4">
             {flights.map((f) => (
               <div
-                key={f.id}
+                key={f.id ?? Math.random()}
                 className="bg-white rounded-xl shadow p-6 hover:shadow-lg transition"
               >
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                   <div className="flex-1">
                     <div className="flex items-center gap-4 mb-2">
-                      <span className="text-2xl font-bold text-gray-800">{f.from}</span>
+                      <span className="text-2xl font-bold text-gray-800">{f.from ?? "Unknown"}</span>
                       <div className="flex-1 flex items-center gap-2">
                         <div className="h-[2px] flex-1 bg-gray-300"></div>
                         <Plane className="h-4 w-4 text-gray-400" aria-hidden="true" />
                         <div className="h-[2px] flex-1 bg-gray-300"></div>
                       </div>
-                      <span className="text-2xl font-bold text-gray-800">{f.to}</span>
+                      <span className="text-2xl font-bold text-gray-800">{f.to ?? "Unknown"}</span>
                     </div>
                     <p className="text-gray-500">
                       <span className="inline-flex items-center gap-1">
                         <Clock className="h-4 w-4 text-gray-500" aria-hidden="true" />
-                        Duration: {f.duration}
+                        Duration: {f.duration ?? "-"}
                       </span>
                     </p>
                   </div>
@@ -48,14 +48,14 @@ export default async function FlightsPage() {
                     <div className="text-right">
                       <p className="text-sm text-gray-500">Price per person</p>
                       <p className="text-2xl font-bold text-green-600">
-                        NPR {f.price.toLocaleString()}
+                        NPR {f.price?.toLocaleString?.() ?? "-"}
                       </p>
                     </div>
                     <BookFlightButton
-                      flightId={f.id}
-                      from={f.from}
-                      to={f.to}
-                      price={f.price}
+                      flightId={f.id ?? ""}
+                      from={f.from ?? ""}
+                      to={f.to ?? ""}
+                      price={f.price ?? 0}
                     />
                   </div>
                 </div>
